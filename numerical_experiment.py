@@ -1,6 +1,17 @@
+'''
+This code creates the pseudo-random list of numbers to be presented, runs the two-digit number
+comparison experiment and saves the result to the 'data' folder in the cloned github repository. The constant
+'ORDER' determines if the pseudo-random list is presented in order (if ORDER=1) or in reverse
+order (if ORDER=-1). 
+'''
+
+
+
 import expyriment
 import random
 import pandas as pd
+
+ORDER=1
 
 exp = expyriment.design.Experiment(name="Numerical Comparison Experiment 1 Normal Order")
 expyriment.control.initialize(exp)
@@ -75,16 +86,18 @@ def fill_pseudo_random_list(list_to_draw_from):
 
 list_to_draw_from=fill_list_to_draw_from()
 pseudo_random_list=fill_pseudo_random_list(list_to_draw_from)[0]
-training_list=[34,56,78,45,12,32,67,87,90,42]
+short_random_list=[35,75,35,75,35,64,64,64]
+training_list=[34,56,78,45,12,32,67,87,90,42] 
 
 	
 instructions_initial = expyriment.stimuli.TextScreen("Instructions",
     f"""Two digit numbers, distributed around 55, will appear on the screen.
-    Press the right-hand response key if the number is
-	larger than 55, or the left-hand key if the number is smaller than
-	55. Please respond as fast as possible whilst keeping errors to a minimum.
-	You will be presented with 10 numbers to practice with before the 
-	experiment starts. 
+
+    Press the right-hand response key if the number is larger than 55, or the left-hand key if the number is smaller than 55.
+
+    Please respond as fast as possible whilst keeping errors to a minimum.
+
+    You will be presented with 10 numbers to practice with before the experiment starts. 
 
     Press the space bar to start.""")
 
@@ -97,16 +110,20 @@ blankscreen=expyriment.stimuli.BlankScreen()
 training_block = expyriment.design.Block(name="Training Block")
 experiment_block = expyriment.design.Block(name="Experiment Block")
 
+def create_training_trials_and_factors(training_list):
+	for number in training_list:
+		trial=expyriment.design.Trial()
+		trial.set_factor('number',number)
+		training_block.add_trial(trial)
 
-for number in training_list:
-    trial=expyriment.design.Trial()
-    trial.set_factor('number',number)
-    training_block.add_trial(trial)
+def add_experiment_trials_and_factors(pseudo_random_list,order):
+	for number in pseudo_random_list[::order]:
+		trial=expyriment.design.Trial()
+		trial.set_factor('number',number)
+		experiment_block.add_trial(trial)
 
-for number in pseudo_random_list[0:5]:
-    trial=expyriment.design.Trial()
-    trial.set_factor('number',number)
-    experiment_block.add_trial(trial)
+create_training_trials_and_factors(training_list)
+add_experiment_trials_and_factors(pseudo_random_list,ORDER)
 
 expyriment.control.start(skip_ready_screen=True)
 instructions_initial.present()
@@ -144,39 +161,17 @@ for trial in experiment_block.trials:
 	exp.data.add([digit, rt,correct])
 
 expyriment.control.end()
-# experiment_data=expyriment.misc.data_preprocessing.read_datafile("data/numerical_experiment_10_202105111736.xpd", only_header_and_variable_names=False, encoding=None, read_variables=None)
-# print(experiment_data)
-# import glob
-# for datafile in glob.glob('data/*.xpd'):
-#      data = pd.read_csv(datafile, comment='#')
-#      print(data)
-
-
-# block_one = expyriment.design.Block(name="Training Block")
-# trial_one = expyriment.design.Trial()
-# stim = expyriment.stimuli.TextLine(text="45", text_size=80)
-# stim.preload()
-# trial_one.add_stimulus(stim)
-# trial_two = expyriment.design.Trial()
-# stim = expyriment.stimuli.TextLine(text="I am a stimulus in Block 1, Trial 2")
-# trial_two.add_stimulus(stim)
-# block_one.add_trial(trial_one)
-# block_one.add_trial(trial_two)
-# exp.add_block(block_one)
 
 
 
 
 
 
-# expyriment.control.start()
-
-# for block in exp.blocks:
-#     for trial in block.trials:
-#         trial.stimuli[0].present()
-#         key, rt = exp.keyboard.wait([expyriment.misc.constants.K_LEFT,
-#                                      expyriment.misc.constants.K_RIGHT])
-#         exp.data.add([block.name, trial.id, key, rt])
 
 
-# expyriment.control.end()
+
+
+
+
+
+

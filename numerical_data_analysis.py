@@ -1,3 +1,10 @@
+'''
+This code performs data analysis on the most recent xpd file in the data folder in the cloned git repository.
+It creates a scatterplot of number to mean reaction time in the two-digit number comparison experiment as well
+as a regression of the logarithm of the distance of the number presented from the standard 55 to error rate.
+'''
+
+
 import glob
 import expyriment
 import pandas as pd
@@ -6,22 +13,14 @@ import matplotlib.pyplot as plt
 from scipy.stats import sem
 import numpy as np
 from scipy import stats
+import os
 
 
 
-
-# experiment_data=expyriment.misc.data_preprocessing.read_datafile("data/numerical_experiment_10_202105111736.xpd", only_header_and_variable_names=False, encoding=None, read_variables=None)
-# print(experiment_data)
-# for datafile in glob.glob('data/*.xpd'):
-#      data = pd.read_csv(datafile, comment='#')
-#      print(data)
-# expyriment.misc.data_preprocessing.write_concatenated_data()
-
-
-data,variables,subject_info,comments=expyriment.misc.data_preprocessing.read_datafile('C:/Users/maxim/OneDrive/Desktop/Numerical-Comparison_git/data/numerical_experiment_20_202105141706.xpd',\
+path_to_data = max(glob.iglob("./data/*"), key=os.path.getctime)
+data,variables,subject_info,comments=expyriment.misc.data_preprocessing.read_datafile(path_to_data,\
  only_header_and_variable_names=False, encoding=None, read_variables=None)
-print(data)
-print(variables)
+
 
 def extract_numbers_and_associated_reaction_times_discounting_errors(data):
 	number_list=[]
@@ -63,11 +62,11 @@ range_list.remove(55)
 
 number_and_rt_list=extract_numbers_and_associated_reaction_times_discounting_errors(data)
 mean_rt_and_standard_error_list=get_mean_rt_and_standard_error(number_and_rt_list[0],number_and_rt_list[1],range_list)
-print(mean_rt_and_standard_error_list)
+
 
 plt.figure()
-plt.errorbar(range_list,mean_rt_and_standard_error_list[0], yerr=mean_rt_and_standard_error_list[1],linestyle=':')
-plt.plot(np.full((20,1),55),np.linspace(400,1400,20), '--')
+plt.errorbar(range_list,mean_rt_and_standard_error_list[0], yerr=mean_rt_and_standard_error_list[1],fmt='o')
+plt.plot(np.full((20,1),55),np.linspace(400,1400,20), '')
 plt.xlabel('number')
 plt.ylabel('mean reaction time(ms)')
 
@@ -98,18 +97,17 @@ def get_error_rate_by_number(range_list,number_list,data):
 				error_rate_list.append(false_counter/(true_counter+false_counter))
 	return error_rate_list
 
-all_numbers_list=extract_numbers_from_data_in_order_of_presentation(data)
-error_rate_by_number_list=get_error_rate_by_number(range_list,all_numbers_list,data)
-
 def distance_from_55(range_list):
 	distance_from_55_list=[]
 	for i in range_list:
 		distance_from_55_list.append(np.log(np.absolute(55-i)))
 	return distance_from_55_list
 
+
+all_numbers_list=extract_numbers_from_data_in_order_of_presentation(data)
+error_rate_by_number_list=get_error_rate_by_number(range_list,all_numbers_list,data)
 distance_from_55_list=distance_from_55(range_list)
-print(distance_from_55_list)
-print(error_rate_by_number_list)
+
 
 
 gradient, intercept, r_value, p_value, std_err = stats.linregress(distance_from_55_list,error_rate_by_number_list)
@@ -118,7 +116,7 @@ y=gradient*x+intercept
 
 plt.figure()
 plt.plot(distance_from_55_list,error_rate_by_number_list,'ob')
-plt.plot(x,y,'-r',label='p='+str(p_value))
+plt.plot(x,y,'-r',label='p_value='+str(round(p_value,6))+' $R^2=$'+str(round((r_value)**2,3)))
 plt.legend()
 plt.xlabel('logarithm of absolute distance from 55')
 plt.ylabel('error rate')
