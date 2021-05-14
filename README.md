@@ -10,10 +10,11 @@ The experiment hopes to show that there is a distance effect for both reaction t
 
 
 # How to Run the Experiment #
-To run this experiment, open the numerical_experiment.py file in this repository using Python 3. Expyriment, pandas and random must be installed.
+To run this experiment, first clone the online repository to a local folder. Then open the numerical_experiment.py file in this local repository using Python 3. Expyriment, pandas and random must be installed. To determine whether the pseudo-random list of numbers is presented in the normal or reverse order, the 'ORDER' constant may be set to 1 or -1.
 
 # Data Analysis #
-What the code does.
+In order to perform the data analysis, open the numerical_data_analysis.py file from the local repository using Python 3. The Expyriment, glob, pandas, statistics, matplotlib, scipy, numpy and os libraries must be installed. The code will perform the analysis on the latest xpd file to be added to the data folder; ie for the most recent participant.
+The analysis follows the first steps of data analysis from the 
 My graphs.
 
 # Extending This Project #
