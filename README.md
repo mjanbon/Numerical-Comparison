@@ -9,6 +9,7 @@ The experiment hopes to show that there is a distance effect for both reaction t
 
 
 # How to Run the Experiment #
+To run this experiment, open the numerical_experiment.py using Python 3. Expyriment, pandas and random must be installed.
 
 # Data Analysis #
 What the code does.
@@ -20,4 +21,5 @@ Further data analyses
 Coding more experiments in the paper
 
 # My Coding Experience #
+Previous coding experience
 
