@@ -34,4 +34,10 @@ Finally, all the experiments and data analyses from this paper might be coded to
 # My Coding Experience #
 Before this course I had coded through Datacamp exercises in the previous semester. I had also take a theoretical algorithms class during my bachelors as well as coded linear regression in STATA for a research project and taken python classes on my own on codeacademy.
 
+Since then, I have learnt how to use libraries specific to neuroscience and psychology such as expyriment, as well as more general ones such as pygame and general skills such as using RegEx. General skills, such as writing clean code and using github are probably the most valuable skills I learnt, as well as effectively being able to parse documentation.
+
+Whilst this course has to be tailored to programmers of all levels I found that the first few classes were quite slow. Perhaps many groups could be formed in the future (rather than a breakout room) according to previous coding experience although I think the ideal solution would be to have a year long PCBS course (which is undoubtedly more effective than Datacamp courses). More mini projects would also have been nice.
+
+Overall though, this course must have been difficult to teach, especially online, and I appreciated the effort, planning and feedback that went into giving the course, designing the exercises and running the PCBS website. Thank you Christophe and Cedric!
+
 
